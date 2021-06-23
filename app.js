@@ -1,17 +1,51 @@
 class Book {
     constructor(title, author, numPages, language, publishingDate, isRead, library) {
+        this.library = library; // every book will point to the same library
         this.title = title;
         this.author = author;
         this.numPages = numPages;
         this.language = language;
         this.publishingDate = publishingDate;
         this.isRead = isRead;
-        this.bookGraphic = this.createBookView(); //the graphic is a div
-        this.library = library; // every book will point to the same library
+        this.bookGraphic = this.createBookGraphic(); //the graphic is what show on the screen
     }
 
     createBookGraphic() {
+        const newBookGraphic = document.createElement('div');
+        newBookGraphic.classList.add('book');
 
+        //Create and add all infomation of the book
+        const titleGraphic = document.createElement('h1');
+        titleGraphic.innerText = this.title;
+
+        const authorGraphic = document.createElement('span');
+        authorGraphic.innerText = 'Author:' + this.author;
+
+        const numPagesGraphic = document.createElement('span');
+        numPagesGraphic.innerText = 'Number of pages: ' + this.numPages;
+
+        const languageGraphic = document.createElement('span');
+        languageGraphic.innerText = "Language: " + this.language;
+
+        const dateGraphic = document.createElement('span');
+        dateGraphic.innerText = "Publishing Date: " + this.publishingDate;
+
+        const deleteButton = document.createElement('button');
+        deleteButton.innerText = "X";
+        deleteButton.addEventListener('click', () => {
+            newBookGraphic.remove();
+        });
+
+
+        //Add info to the newbook card
+        newBookGraphic.appendChild(titleGraphic);
+        newBookGraphic.appendChild(authorGraphic);
+        newBookGraphic.appendChild(numPagesGraphic);
+        newBookGraphic.appendChild(languageGraphic);
+        newBookGraphic.appendChild(dateGraphic);
+        newBookGraphic.appendChild(deleteButton);
+
+        return newBookGraphic;
     }
 }
 
@@ -24,27 +58,19 @@ class Library {
 
     addBook(title, author, numPages, language, publishingDate, isRead) {
         let newBook = new Book(title, author, numPages, language, publishingDate, isRead, this);
-        books.push(newBook);
-        numBooks++;
+        this.books.push(newBook);//add book
+        this.libraryGraphic.appendChild(newBook.bookGraphic);//add book graphic
+        this.numBooks++;
     }
 
     removeBook(book) {
         this.numBooks--;
-        //1/remove the book
-
-        //2/remove the book view
-        this.libraryGraphic.removeChild(book.bookGraphic);
+        this.books.splice(this.books.indexOf(book), 1);
     }
 }
 
 
-
-
-let library = [];
-
-function removeBook(title) {
-    library = library.filter(book => book.title !== title);
-}
+let library = new Library();
 
 //Add a book button
 const popupButton = document.querySelector("#popupButton");
@@ -79,38 +105,5 @@ popupForm.addEventListener('click', (event) => {
 //Addnewbook button, when add, collect all information in the form----------------------------------- 
 const addNewBookButton = document.querySelector('#addNewBook');
 addNewBookButton.addEventListener('click', () => {
-    let newBook = new Book(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
-    library.push(newBook);
-    displayNewBook(newBook);
+    library.addBook(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
 })
-
-//Display newbook in the library
-let libraryView = document.querySelector('.books');
-
-function displayNewBook(newBook) {
-    const newBookView = document.createElement('div');
-    newBookView.classList.add('book');
-
-    //Create and add all infomation of the book
-    const titleView = document.createElement('h1');
-    titleView.innerText = newBook.title;
-    const authorView = document.createElement('span');
-    authorView.innerText = 'Author:' + newBook.author;
-    const numberOfPagesView = document.createElement('span');
-    numberOfPagesView.innerText = 'Number of pages: ' + newBook.numPages;
-    const languageView = document.createElement('span');
-    languageView.innerText = "Language: " + newBook.language;
-    const dateView = document.createElement('span');
-    dateView.innerText = "Publishing Date: " + newBook.publishingDate;
-
-
-    //Add info to the newbook card
-    newBookView.appendChild(titleView);
-    newBookView.appendChild(authorView);
-    newBookView.appendChild(numberOfPagesView);
-    newBookView.appendChild(languageView);
-    newBookView.appendChild(dateView);
-
-    //show the new book in the library
-    libraryView.appendChild(newBookView);
-}
