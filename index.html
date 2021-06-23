@@ -31,7 +31,7 @@
     </section>
 
     <!-- Adding Book, Make The Form Pop Up -->
-    <button id="addButton">Add</button>
+    <button id="popupButton">Add</button>
 
     <!-- Popup Form -->
     <div class="modal-bg">
@@ -42,15 +42,15 @@
             <label for="Author">Author:</label>
             <input type="text" name="Author" id="Author" placeholder="Enter the author's name here">
             <label for="NumPages">Number of pages:</label>
-            <input type="text" name="NumPages" id="NumPages" placeholder="Enter the number of pages here">
+            <input type="number" name="NumPages" id="NumPages" placeholder="Enter the number of pages here">
             <label for="Language">Language:</label>
             <input type="text" name="Language" id="Language" placeholder="Enter the language here">
             <label for="Date">Publishing date:</label>
             <input type="date" name="Date" id="Date">
             <label for="Status">Did you read the book?</label>
             <select name="Status" id="Status">
-                <option value="Yes">Yes, I have read the book</option>
-                <option value="No">No, I have not read the book</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
             </select>
             <Button id="addNewBook">Add</Button>
         </div>
