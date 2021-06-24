@@ -1,84 +1,47 @@
-class Book {
-    constructor(title, author, numPages, language, publishingDate, isRead, library) {
-        this.library = library; // every book will point to the same library
-        this.title = title;
-        this.author = author;
-        this.numPages = numPages;
-        this.language = language;
-        this.publishingDate = publishingDate;
-        this.isRead = isRead;
-        //this.bookGraphic = this.createBookGraphic(); //the graphic is what show on the screen
+//Library log---------------------------------------------------------------------------------
+class LibraryLogModel {
+    constructor() {
+        this.books = [];
+        this.readBook = 0;
     }
 
-    createBookGraphic() {
-        const newBookGraphic = document.createElement('div');
-        newBookGraphic.classList.add('book');
-
-        //
-        if (this.isRead === 'Yes') {
-            newBookGraphic.classList.add('isRead');
+    addBook(book) {
+        this.books.push(book);
+        if (book.isRead === 'Yes') {
+            this.readBook++;
         }
+    }
 
-        //Create and add all infomation of the book
-        const titleGraphic = document.createElement('h1');
-        titleGraphic.innerText = this.title;
+    removeBook(book) {
+        if (book.isRead === 'Yes') {
+            this.readBook--;
+        }
+        this.books.splice(this.books.indexOf(book), 1);
+    }
 
-        const authorGraphic = document.createElement('span');
-        authorGraphic.innerText = 'Author:' + this.author;
+    getTotalBooks() {
+        return this.books.length;
+    }
 
-        const numPagesGraphic = document.createElement('span');
-        numPagesGraphic.innerText = 'Number of pages: ' + this.numPages;
+    getTotalReadBooks() {
+        return this.readBook;
+    }
 
-        const languageGraphic = document.createElement('span');
-        languageGraphic.innerText = "Language: " + this.language;
+    getTotalUnreadBooks() {
+        return this.books.length - this.readBook;
+    }
 
-        const dateGraphic = document.createElement('span');
-        dateGraphic.innerText = "Publishing Date: " + this.publishingDate;
-
-        const readStatusButton = document.createElement('button');
-        readStatusButton.classList.add('material-icons', 'readStatusButton');
-        readStatusButton.classList.add('material-icons', 'readStatusButton');
-        readStatusButton.innerText = this.isRead === 'Yes' ? 'visibility' : 'visibility_off';
-        let currBook = this;
-        readStatusButton.addEventListener('click', (event) => {
-            if (event.target.innerText === 'visibility') {
-                event.target.classList.add('notRead');
-                newBookGraphic.classList.remove('isRead');
-                event.target.innerText = 'visibility_off';
-                currBook.isRead = 'No';
-                library.decreaseNumBooksRead();
-            }
-            else {
-                event.target.classList.remove('notRead');
-                newBookGraphic.classList.add('isRead');
-                event.target.innerText = 'visibility';
-                currBook.isRead = 'Yes';
-                library.increaseNumBooksRead();
-            }
-        })
-
-
-        const deleteButton = document.createElement('button');
-        deleteButton.classList.add('material-icons', 'deleteButton');
-        deleteButton.innerText = 'clear';
-        deleteButton.addEventListener('click', () => {
-            newBookGraphic.remove();
-        });
-
-        //Add info to the newbook card
-        newBookGraphic.appendChild(titleGraphic);
-        newBookGraphic.appendChild(authorGraphic);
-        newBookGraphic.appendChild(numPagesGraphic);
-        newBookGraphic.appendChild(languageGraphic);
-        newBookGraphic.appendChild(dateGraphic);
-        newBookGraphic.appendChild(deleteButton);
-        newBookGraphic.appendChild(readStatusButton);
-
-        return newBookGraphic;
+    updateNumReadBooks(readStatus) {
+        if (readStatus === 'Yes') {
+            this.readBook++;
+        }
+        else {
+            this.readBook--;
+        }
     }
 }
 
-class Log {
+class LibraryLogView {
     constructor() {
         this.createLogGraphic(); // container that contain all total book, books read/not read
     }
@@ -105,65 +68,147 @@ class Log {
     }
 }
 
-class Library { ////////////USE BOOKS.SIZE()
-    constructor() {
-        this.numBooks = 0;
-        this.readBooks = 0;
-        this.books = [];
-        this.log = new Log();
-        this.libraryGraphic = document.querySelector('.books'); // this contains all graphic books (cards show on screen ) 
+let libraryLogView = new LibraryLogView();
+let librayLogModel = new LibraryLogModel();
+//---------------------------------------------------------------------------------Library log
+
+//Book------------------------------------------------------------------------------------
+class Book {
+    constructor(title, author, numPages, language, publishingDate, isRead) {
+        this.title = title;
+        this.author = author;
+        this.numPages = numPages;
+        this.language = language;
+        this.publishingDate = publishingDate;
+        this.isRead = isRead;
     }
 
-    increaseNumBooksRead() {
-        this.readBooks++;
-        this.log.updateLogGraphic(this.numBooks, this.readBooks, this.numBooks - this.readBooks);
+    changeReadStatus() {
+        this.isRead = this.isRead === 'Yes' ? 'No' : 'Yes';
+        return this.isRead;
+    }
+}
+
+class BookView {
+    constructor(title, author, numPages, language, publishingDate, isRead) {
+        this.createAllViews(title, author, numPages, language, publishingDate, isRead);
     }
 
-    decreaseNumBooksRead() {
-        this.readBooks--;
-        this.log.updateLogGraphic(this.numBooks, this.readBooks, this.numBooks - this.readBooks);
-    }
-    increaseNumBooks() {
-        this.numBooks++;
-        this.log.updateLogGraphic(this.numBooks, this.readBooks, this.numBooks - this.readBooks);
-    }
-    decreaseNumBooks() {
-        this.numBooks--;
-        this.log.updateLogGraphic(this.numBooks, this.readBooks, this.numBooks - this.readBooks);
-    }
+    createAllViews(title, author, numPages, language, publishingDate, isRead) {
+        //Get the shelf
+        let bookshelf = document.querySelector('.books');
 
-    addBook(title, author, numPages, language, publishingDate, isRead) {
-        let newBook = new Book(title, author, numPages, language, publishingDate, isRead, this);
-        this.books.push(newBook);//add book
-        this.libraryGraphic.appendChild(newBook.createBookGraphic());//add book graphic
-        this.increaseNumBooks();
+        this.bookGraphic = document.createElement('div');
+        this.bookGraphic.classList.add('book');
+
+        //BOOKS INFO GRAPHIC
+        const titleGraphic = document.createElement('h1');
+        titleGraphic.innerText = title;
+
+        const authorGraphic = document.createElement('span');
+        authorGraphic.innerText = 'Author:' + author;
+
+        const numPagesGraphic = document.createElement('span');
+        numPagesGraphic.innerText = 'Number of pages: ' + numPages;
+
+        const languageGraphic = document.createElement('span');
+        languageGraphic.innerText = "Language: " + language;
+
+        const dateGraphic = document.createElement('span');
+        dateGraphic.innerText = "Publishing Date: " + publishingDate;
+
         if (isRead === 'Yes') {
-            this.increaseNumBooksRead();
+            this.bookGraphic.classList.add('isRead');
         }
+
+        //BUTTON GRAPHIC
+        this.readStatusButton = document.createElement('button');
+        this.readStatusButton.classList.add('material-icons', 'readStatusButton');
+        this.readStatusButton.classList.add('material-icons', 'readStatusButton');
+        this.readStatusButton.innerText = isRead === 'Yes' ? 'visibility' : 'visibility_off';
+
+        this.deleteButton = document.createElement('button');
+        this.deleteButton.classList.add('material-icons', 'deleteButton');
+        this.deleteButton.innerText = 'clear';
+
+        //Add info to the newbook card
+        this.bookGraphic.appendChild(titleGraphic);
+        this.bookGraphic.appendChild(authorGraphic);
+        this.bookGraphic.appendChild(numPagesGraphic);
+        this.bookGraphic.appendChild(languageGraphic);
+        this.bookGraphic.appendChild(dateGraphic);
+        this.bookGraphic.appendChild(this.deleteButton);
+        this.bookGraphic.appendChild(this.readStatusButton);
+
+        //Put the book to the shelf
+        bookshelf.append(this.bookGraphic);
     }
 
-    removeBook(book) {
-        //remove book in array and book graphic
-        this.books.splice(this.books.indexOf(book), 1);
-        book.bookGraphic.remove();
+    //Getters
+    getBookGraphic() { return this.bookGraphic; }
+    getReadStatusButton() { return this.readStatusButton; }
+    getDeleteButton() { return this.deleteButton; }
 
-        this.decreaseNumBooks();
-        if (book.isRead === 'Yes') {
-            this.decreaseNumBooksRead();
-        } //update the log
+    //Setters
+    removeView() { this.bookGraphic.remove(); }
+    setReadStatusView(isRead) {
+        if (isRead === 'Yes') {
+            this.bookGraphic.classList.add('isRead');
+            this.readStatusButton.classList.remove('notRead');
+            this.readStatusButton.innerText = 'visibility';
+        }
+        else {
+            this.bookGraphic.classList.remove('isRead');
+            this.readStatusButton.classList.add('notRead');
+            this.readStatusButton.innerText = 'visibility_off';
+        }
     }
 }
 
 
-let library = new Library();
+class BookController {
+    constructor(title, author, numPages, language, publishingDate, isRead) {
+        this.model = new Book(title, author, numPages, language, publishingDate, isRead);
+        this.view = new BookView(title, author, numPages, language, publishingDate, isRead);
+        this.createEventsHandler();
 
-//Add a book button
-const popupButton = document.querySelector("#popupButton");
-popupButton.addEventListener('click', () => {
-    //Show the pop up form
-    let popupWindow = document.querySelector('.modal-bg');
-    popupWindow.style.visibility = 'visible';
-});
+        librayLogModel.addBook(this.model);
+        libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+
+        saveData();
+    }
+
+    createEventsHandler() {
+        this.createChangeReadStatusEvent();
+        this.createRemovingBookEvent();
+    }
+
+    createChangeReadStatusEvent() {
+        let changeReadStatusButton = this.view.getReadStatusButton();
+        changeReadStatusButton.addEventListener('click', () => {
+            let currReadStatus = this.model.changeReadStatus();
+            this.view.setReadStatusView(currReadStatus);
+            librayLogModel.updateNumReadBooks(currReadStatus);
+            libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+            saveData();
+
+        });
+    }
+
+    createRemovingBookEvent() {
+        let currBook = this.model;
+        let removeBookButton = this.view.getDeleteButton();
+        removeBookButton.addEventListener('click', () => {
+            this.view.removeView();
+            librayLogModel.removeBook(currBook);
+            libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+            saveData();
+        });
+    }
+}
+
+//------------------------------------------------------------------------------------Book
+
 
 
 //Pop up form-------------------------------------------------------------------------------
@@ -187,12 +232,31 @@ popupForm.addEventListener('click', (event) => {
     event.stopPropagation();
 })
 
-//Addnewbook button, when add, collect all information in the form----------------------------------- 
+//Addnewbook button, when add, collect all information in the form
 const addNewBookButton = document.querySelector('#addNewBook');
 addNewBookButton.addEventListener('click', () => {
-    library.addBook(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
+    new BookController(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
     popupBackGround.style.visibility = 'hidden';
 })
 
-// Storage
-local
+//Add a book button (pop up a form to enter)
+const popupButton = document.querySelector("#popupButton");
+popupButton.addEventListener('click', () => {
+    //Show the pop up form
+    let popupWindow = document.querySelector('.modal-bg');
+    popupWindow.style.visibility = 'visible';
+});
+
+//---------------------------------------------------------------------------------Pop up form
+function saveData() {
+    localStorage.setItem('allBooks', JSON.stringify(librayLogModel.books));
+}
+
+(function restoreData() {
+    if (localStorage.allBooks) {
+        let books = JSON.parse(localStorage.allBooks);
+        books.forEach(book => {
+            new BookController(book.title, book.author, book.numPages, book.language, book.publishingDate, book.isRead);
+        });
+    }
+})()
