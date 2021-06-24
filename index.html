@@ -37,25 +37,25 @@
 
     <!-- Popup Form -->
     <div class="modal-bg">
-        <div class="modal">
+        <form class="modal myForm">
             <h2>Add a new book</h2>
             <label for="BookTitle">Book title:</label>
-            <input type="text" name="BookTitle" id="BookTitle" placeholder="Enter the book's title here">
+            <input type="text" name="BookTitle" id="BookTitle" placeholder="Enter the book's title here" required>
             <label for="Author">Author:</label>
-            <input type="text" name="Author" id="Author" placeholder="Enter the author's name here">
+            <input type="text" name="Author" id="Author" placeholder="Enter the author's name here" required>
             <label for="NumPages">Number of pages:</label>
-            <input type="number" name="NumPages" id="NumPages" placeholder="Enter the number of pages here">
+            <input type="number" name="NumPages" id="NumPages" placeholder="Enter the number of pages here" required>
             <label for="Language">Language:</label>
-            <input type="text" name="Language" id="Language" placeholder="Enter the language here">
+            <input type="text" name="Language" id="Language" placeholder="Enter the language here" required>
             <label for="Date">Publishing date:</label>
-            <input type="date" name="Date" id="Date">
+            <input type="date" name="Date" id="Date" required>
             <label for="Status">Did you read the book?</label>
             <select name="Status" id="Status">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
-            <Button id="addNewBook">Add</Button>
-        </div>
+            <Button id="addNewBook" type="submit">Add</Button>
+        </form>
     </div>
 
     <script src="app.js"></script>

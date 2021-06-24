@@ -125,7 +125,8 @@ class BookView {
         this.readStatusButton = document.createElement('button');
         this.readStatusButton.classList.add('material-icons', 'readStatusButton');
         this.readStatusButton.classList.add('material-icons', 'readStatusButton');
-        this.readStatusButton.innerText = isRead === 'Yes' ? 'visibility' : 'visibility_off';
+        this.setReadStatusView(isRead);
+
 
         this.deleteButton = document.createElement('button');
         this.deleteButton.classList.add('material-icons', 'deleteButton');
@@ -235,8 +236,17 @@ popupForm.addEventListener('click', (event) => {
 //Addnewbook button, when add, collect all information in the form
 const addNewBookButton = document.querySelector('#addNewBook');
 addNewBookButton.addEventListener('click', () => {
-    new BookController(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
-    popupBackGround.style.visibility = 'hidden';
+    let allFieldWereFilled = true;
+    let allInputs = document.querySelectorAll('input');
+    allInputs.forEach((input) => {
+        if (input.value === '') {
+            allFieldWereFilled = false;
+        }
+    })
+    if (allFieldWereFilled) {
+        new BookController(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
+        popupBackGround.style.visibility = 'hidden';
+    }
 })
 
 //Add a book button (pop up a form to enter)
@@ -261,6 +271,6 @@ function saveData() {
     }
     else {
         //Add a sample book
-        new BookController("The Stranger", "Albert Camus", "134", "English", "1942-1-1", "Yes");
+        new BookController("The Stranger", "Albert Camus", "134", "English", "1942-01-01", "Yes");
     }
 })()
