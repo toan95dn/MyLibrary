@@ -14,6 +14,11 @@ class Book {
         const newBookGraphic = document.createElement('div');
         newBookGraphic.classList.add('book');
 
+        //
+        if (this.isRead === 'Yes') {
+            newBookGraphic.classList.add('isRead');
+        }
+
         //Create and add all infomation of the book
         const titleGraphic = document.createElement('h1');
         titleGraphic.innerText = this.title;
@@ -38,12 +43,14 @@ class Book {
         readStatusButton.addEventListener('click', (event) => {
             if (event.target.innerText === 'visibility') {
                 event.target.classList.add('notRead');
+                newBookGraphic.classList.remove('isRead');
                 event.target.innerText = 'visibility_off';
                 currBook.isRead = 'No';
                 library.decreaseNumBooksRead();
             }
             else {
                 event.target.classList.remove('notRead');
+                newBookGraphic.classList.add('isRead');
                 event.target.innerText = 'visibility';
                 currBook.isRead = 'Yes';
                 library.increaseNumBooksRead();
@@ -186,3 +193,6 @@ addNewBookButton.addEventListener('click', () => {
     library.addBook(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
     popupBackGround.style.visibility = 'hidden';
 })
+
+// Storage
+local
