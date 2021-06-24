@@ -7,7 +7,7 @@ class Book {
         this.language = language;
         this.publishingDate = publishingDate;
         this.isRead = isRead;
-        this.bookGraphic = this.createBookGraphic(); //the graphic is what show on the screen
+        //this.bookGraphic = this.createBookGraphic(); //the graphic is what show on the screen
     }
 
     createBookGraphic() {
@@ -62,7 +62,7 @@ class Book {
         deleteButton.classList.add('material-icons', 'deleteButton');
         deleteButton.innerText = 'clear';
         deleteButton.addEventListener('click', () => {
-            library.removeBook(this);
+            newBookGraphic.remove();
         });
 
         //Add info to the newbook card
@@ -135,7 +135,7 @@ class Library { ////////////USE BOOKS.SIZE()
     addBook(title, author, numPages, language, publishingDate, isRead) {
         let newBook = new Book(title, author, numPages, language, publishingDate, isRead, this);
         this.books.push(newBook);//add book
-        this.libraryGraphic.appendChild(newBook.bookGraphic);//add book graphic
+        this.libraryGraphic.appendChild(newBook.createBookGraphic());//add book graphic
         this.increaseNumBooks();
         if (isRead === 'Yes') {
             this.increaseNumBooksRead();
