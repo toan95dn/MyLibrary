@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Viaoda Libre', cursive;
 }
 
 html{
@@ -11,81 +12,149 @@ html{
 body{
     max-width: 100vw;
     min-height: 100vh;
+    background: rgb(238,174,202);
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);    
     display: flex;
     flex-direction: column;
 }
 
 /* Header */
 header{
-    background-image: url("images/books.jpeg");
-    background-size: cover;
     display: flex;
-    height: 20vh;
-    justify-content: space-between;
+    min-height: 20vh;
+    justify-content: space-around;
+    align-items: center;
     flex-wrap: wrap;
 }
 
-h1{
+h1 span{
+    font-size: 4rem !important;
+}
+
+h1,h2{
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-.log{
-    border: 2px solid blue;
-    width: 400px;
+h2{
+    font-size: 2.5rem;
 }
 
-/* Filter */
-.filter{
+.log{
+    border: 2px solid lightgray;
+    width: 400px;
+    height: 15rem;
+    margin:1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* Divide */
+.divide{
+    margin-top: 0.5rem;
     background-color: grey;
-    height:10vh;
+    height:1vh;
 }
 
 /* Books */
 .books{
     flex:1;
-    padding: 2rem 2rem;
-    background-color: turquoise;
+    padding: 4rem 4rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
     align-content: center;
     justify-items: center;
+    
    
 }
 
 .book{
+    position: relative;
     width: 30vw;
     height: 200px;
-    background-color: lightgreen;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
     border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    color:#DDF3F5;
 }
 
-.span{
+span{
     display: block;
+    font-size: 2rem;
+}
+
+.deleteButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    font-size: 2rem;
+    text-align: center;
+    width: 4rem;
+    height: 4rem;
+    border:none;
+}
+
+.deleteButton:hover{
+    color: red;
+
+}
+
+.readStatusButton{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    font-size: 2rem;
+    text-align: center;
+    width: 4rem;
+    height: 4rem;
+    border:none;
+    color:rgb(56, 255, 56);
+}
+
+.readStatusButton.notRead{
+    color:red;
 }
 
 /*Button to pop up form to add a book  */
 #popupButton{
+    background-color: #1DA1F2;
+    text-align: center;
+    justify-content: center;
+    font-size: 4rem;
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    border: 2px solid black;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    border:none;
+    color:white;
     border-radius: 50%;
     width: 5rem;
     height: 5rem;
+    transition: 0.5s;
 }
 
-#popupButton:focus{
-    color: red;
+#popupButton:hover{
+    transform: rotate(90deg);
 }
 
 /* Modal */
 input,label,select,button{
     display: block;
     font-size: inherit;
+    border: none;
     padding: 0.5rem;
     border-radius: 1rem;
 }
@@ -94,13 +163,15 @@ input,select:focus{
     outline:none;
 }
 
-h2{
+h1{
     text-align: center;
+    font-size: 3rem;
 }
 
 #addNewBook{
     margin-top: 2rem;
-    background-color: lightgreen;
+    background-color: #1DA1F2;
+    border: none;
 }
 
 .modal-bg{
@@ -117,11 +188,11 @@ h2{
 .modal{
     width: 500px;
     height: 600px;
-    border: 5px solid red;
     border-radius: 2rem;
     padding: 2rem;
     font-size: 2rem;
-    background-color: royalblue;
+    background-color: #D9AFD9;
+    background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -131,6 +202,7 @@ h2{
 @media only screen and (max-width:550px){
     .books{
         grid-template-columns: 1fr;
+        padding: 1rem;
     }
     .book{
         width: 90vw;
@@ -140,6 +212,7 @@ h2{
 @media only screen and (min-width:550px) and (max-width: 900px){
     .books{
         grid-template-columns: 1fr 1fr;
+        padding: 1rem;
     }
     .book{
         width: 45vw;
