@@ -259,4 +259,8 @@ function saveData() {
             new BookController(book.title, book.author, book.numPages, book.language, book.publishingDate, book.isRead);
         });
     }
+    else {
+        //Add a sample book
+        new BookController("The Stranger", "Albert Camus", "134", "English", "1942-1-1", "Yes");
+    }
 })()
