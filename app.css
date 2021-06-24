@@ -179,6 +179,16 @@ h1{
     border: none;
 }
 
+#closeForm{
+    position:absolute;
+    top:1rem;
+    right:1rem;
+}
+
+#closeForm:hover{
+    background-color: lightcoral;
+}
+
 .modal-bg{
     visibility: hidden;
     position: fixed;
@@ -201,6 +211,7 @@ h1{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    position: relative;
 }
 
 /* Responsive */
@@ -214,6 +225,13 @@ h1{
     }
     .book{
         width: 90vw;
+    }
+    .modal{
+        max-width:95vw;
+        max-height: 95vh;
+    }
+    input,label,select,button{
+        font-size: medium;
     }
 }
 

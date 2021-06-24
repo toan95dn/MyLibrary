@@ -249,13 +249,22 @@ addNewBookButton.addEventListener('click', () => {
     }
 })
 
+//close form button
+const closeFormButton = document.querySelector('#closeForm');
+closeFormButton.addEventListener('click', () => {
+    popupBackGround.style.visibility = 'hidden';
+})
+
+
 //Add a book button (pop up a form to enter)
 const popupButton = document.querySelector("#popupButton");
-popupButton.addEventListener('click', () => {
+popupButton.addEventListener('click', (event) => {
     //Show the pop up form
     let popupWindow = document.querySelector('.modal-bg');
     popupWindow.style.visibility = 'visible';
+    event.stopPropagation();
 });
+
 
 //---------------------------------------------------------------------------------Pop up form
 function saveData() {
