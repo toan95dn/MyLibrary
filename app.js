@@ -215,58 +215,62 @@ class BookController {
 //Pop up form-------------------------------------------------------------------------------
 
 //All input
-const bookTitleInput = document.querySelector('#BookTitle');
-const authorInput = document.querySelector('#Author');
-const numPagesInput = document.querySelector('#NumPages');
-const languageInput = document.querySelector('#Language');
-const dateInput = document.querySelector('#Date');
-const statusInput = document.querySelector('#Status');
+(function createPopup() {
+    const bookTitleInput = document.querySelector('#BookTitle');
+    const authorInput = document.querySelector('#Author');
+    const numPagesInput = document.querySelector('#NumPages');
+    const languageInput = document.querySelector('#Language');
+    const dateInput = document.querySelector('#Date');
+    const statusInput = document.querySelector('#Status');
 
-//Pop up background
-const popupBackGround = document.querySelector('.modal-bg');
-popupBackGround.addEventListener('click', (event) => {
-    popupBackGround.style.visibility = 'hidden';
-})
+    //Pop up background
+    const popupBackGround = document.querySelector('.modal-bg');
+    popupBackGround.addEventListener('click', (event) => {
+        popupBackGround.style.visibility = 'hidden';
+    })
 
-const popupForm = document.querySelector('.modal');
-popupForm.addEventListener('click', (event) => {
-    event.stopPropagation();
-})
+    const popupForm = document.querySelector('.modal');
+    popupForm.addEventListener('click', (event) => {
+        event.stopPropagation();
+    })
 
-//Addnewbook button, when add, collect all information in the form
-const addNewBookButton = document.querySelector('#addNewBook');
-addNewBookButton.addEventListener('click', () => {
-    let allFieldWereFilled = true;
-    let allInputs = document.querySelectorAll('input');
-    allInputs.forEach((input) => {
-        if (input.value === '') {
-            allFieldWereFilled = false;
+    //Addnewbook button, when add, collect all information in the form
+    const addNewBookButton = document.querySelector('#addNewBook');
+    addNewBookButton.addEventListener('click', () => {
+        let allFieldWereFilled = true;
+        let allInputs = document.querySelectorAll('input');
+        allInputs.forEach((input) => {
+            if (input.value === '') {
+                allFieldWereFilled = false;
+            }
+        })
+        if (allFieldWereFilled) {
+            new BookController(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
+            popupBackGround.style.visibility = 'hidden';
         }
     })
-    if (allFieldWereFilled) {
-        new BookController(bookTitleInput.value, authorInput.value, numPagesInput.value, languageInput.value, dateInput.value, statusInput.value);
+
+    //close form button
+    const closeFormButton = document.querySelector('#closeForm');
+    closeFormButton.addEventListener('click', () => {
         popupBackGround.style.visibility = 'hidden';
-    }
-})
-
-//close form button
-const closeFormButton = document.querySelector('#closeForm');
-closeFormButton.addEventListener('click', () => {
-    popupBackGround.style.visibility = 'hidden';
-})
+    })
 
 
-//Add a book button (pop up a form to enter)
-const popupButton = document.querySelector("#popupButton");
-popupButton.addEventListener('click', (event) => {
-    //Show the pop up form
-    let popupWindow = document.querySelector('.modal-bg');
-    popupWindow.style.visibility = 'visible';
-    event.stopPropagation();
-});
-
+    //Add a book button (pop up a form to enter)
+    const popupButton = document.querySelector("#popupButton");
+    popupButton.addEventListener('click', (event) => {
+        //Show the pop up form
+        let popupWindow = document.querySelector('.modal-bg');
+        popupWindow.style.visibility = 'visible';
+        event.stopPropagation();
+    });
+})()
 
 //---------------------------------------------------------------------------------Pop up form
+
+
+//Local storage--------------------------------------------------------------------------------
 function saveData() {
     localStorage.setItem('allBooks', JSON.stringify(librayLogModel.books));
 }
@@ -283,3 +287,4 @@ function saveData() {
         new BookController("The Stranger", "Albert Camus", "134", "English", "1942-01-01", "Yes");
     }
 })()
+//--------------------------------------------------------------------------------Local storage
