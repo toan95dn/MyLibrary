@@ -1,5 +1,5 @@
 //Library log---------------------------------------------------------------------------------
-class LibraryLogModel {
+class LibraryLogModal {
     constructor() {
         this.books = [];
         this.readBook = 0;
@@ -69,7 +69,7 @@ class LibraryLogView {
 }
 
 let libraryLogView = new LibraryLogView();
-let librayLogModel = new LibraryLogModel();
+let librayLogModal = new LibraryLogModal();
 //---------------------------------------------------------------------------------Library log
 
 //Book------------------------------------------------------------------------------------
@@ -169,12 +169,12 @@ class BookView {
 
 class BookController {
     constructor(title, author, numPages, language, publishingDate, isRead) {
-        this.model = new Book(title, author, numPages, language, publishingDate, isRead);
+        this.modal = new Book(title, author, numPages, language, publishingDate, isRead);
         this.view = new BookView(title, author, numPages, language, publishingDate, isRead);
         this.createEventsHandler();
 
-        librayLogModel.addBook(this.model);
-        libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+        librayLogModal.addBook(this.modal);
+        libraryLogView.updateLogGraphic(librayLogModal.getTotalBooks(), librayLogModal.getTotalReadBooks(), librayLogModal.getTotalUnreadBooks());
 
         saveData();
     }
@@ -187,22 +187,22 @@ class BookController {
     createChangeReadStatusEvent() {
         let changeReadStatusButton = this.view.getReadStatusButton();
         changeReadStatusButton.addEventListener('click', () => {
-            let currReadStatus = this.model.changeReadStatus();
+            let currReadStatus = this.modal.changeReadStatus();
             this.view.setReadStatusView(currReadStatus);
-            librayLogModel.updateNumReadBooks(currReadStatus);
-            libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+            librayLogModal.updateNumReadBooks(currReadStatus);
+            libraryLogView.updateLogGraphic(librayLogModal.getTotalBooks(), librayLogModal.getTotalReadBooks(), librayLogModal.getTotalUnreadBooks());
             saveData();
 
         });
     }
 
     createRemovingBookEvent() {
-        let currBook = this.model;
+        let currBook = this.modal;
         let removeBookButton = this.view.getDeleteButton();
         removeBookButton.addEventListener('click', () => {
             this.view.removeView();
-            librayLogModel.removeBook(currBook);
-            libraryLogView.updateLogGraphic(librayLogModel.getTotalBooks(), librayLogModel.getTotalReadBooks(), librayLogModel.getTotalUnreadBooks());
+            librayLogModal.removeBook(currBook);
+            libraryLogView.updateLogGraphic(librayLogModal.getTotalBooks(), librayLogModal.getTotalReadBooks(), librayLogModal.getTotalUnreadBooks());
             saveData();
         });
     }
@@ -272,7 +272,7 @@ class BookController {
 
 //Local storage--------------------------------------------------------------------------------
 function saveData() {
-    localStorage.setItem('allBooks', JSON.stringify(librayLogModel.books));
+    localStorage.setItem('allBooks', JSON.stringify(librayLogModal.books));
 }
 
 (function restoreData() {
